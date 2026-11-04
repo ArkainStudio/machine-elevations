@@ -597,10 +597,13 @@ function updateHint() {
 $('mid').addEventListener('input', updateHint); updateHint();
 async function fetchRecord(did) {
   const e = did.replace(/[^A-Za-z0-9:._-]/g, encodeURIComponent);
-  for (const host of ['https://mcr.peaq.xyz', 'https://mcr-20.peaq.xyz']) {
+  const urls = [];
+  if (/^https?:$/.test(location.protocol)) urls.push(`/api/mcr?did=${encodeURIComponent(did)}`);
+  urls.push(`https://mcr.peaq.xyz/mcr/${e}`, `https://mcr-20.peaq.xyz/mcr/${e}`);
+  for (const url of urls) {
     try {
-      const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 7000);
-      const r = await fetch(`${host}/mcr/${e}`, { signal: ctl.signal }); clearTimeout(tm);
+      const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 9000);
+      const r = await fetch(url, { signal: ctl.signal }); clearTimeout(tm);
       if (!r.ok) continue;
       const txt = await r.text(); const parsed = parseApi(txt);
       if (parsed.data && (parsed.data.mcr !== undefined || parsed.data.event_count !== undefined)) return parsed;
