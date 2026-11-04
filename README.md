@@ -4,7 +4,7 @@
 
 Machine Elevations draws each machine on [peaq](https://www.peaq.xyz/) as an architectural front elevation: dimension lines, callouts and a title block at scale 1:16. The drawing is generated from the machine's peaqID and its record in peaqOS. The same ID always gives the same drawing, and the drawing changes only when the record changes.
 
-Live demo: **https://elevations.arkain.studio**
+Live demo: **https://machine-elevations.vercel.app**
 
 ## How data becomes a drawing
 
