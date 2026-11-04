@@ -604,7 +604,10 @@ async function fetchRecord(did) {
     try {
       const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 9000);
       const r = await fetch(url, { signal: ctl.signal }); clearTimeout(tm);
-      if (!r.ok) continue;
+      if (!r.ok) {
+        if (url.startsWith('/api/')) { try { const j = await r.json(); if (j && j.error === 'no_mcr_record') return { missing: true }; } catch (e2) {} }
+        continue;
+      }
       const txt = await r.text(); const parsed = parseApi(txt);
       if (parsed.data && (parsed.data.mcr !== undefined || parsed.data.event_count !== undefined)) return parsed;
     } catch (err) {}
@@ -620,7 +623,8 @@ $('drawForm').addEventListener('submit', async ev => {
   msg('Reading the machine\'s record from peaq…');
   const rec = await fetchRecord(did);
   if (normDid($('mid').value) !== did) return;
-  if (rec) { if (nm) rec.data.name = nm; show(buildModel(did, rec.data, 'live')); msg('Live record loaded from the peaq MCR API.'); }
+  if (rec && rec.missing) msg('Drawn from the ID only. peaqOS has no credit record for this machine yet, so it stays on drafting paper.');
+  else if (rec) { if (nm) rec.data.name = nm; show(buildModel(did, rec.data, 'live')); msg('Live record loaded from the peaq MCR API.'); }
   else msg('Drawn from the ID only. The live record could not be read here, so add it under "Add credit data from peaq".');
 });
 $('apply').addEventListener('click', () => {
