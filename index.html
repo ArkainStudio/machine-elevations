@@ -30,6 +30,7 @@ a{color:var(--ink);text-underline-offset:3px}
 .mast .wrap{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-top:14px;padding-bottom:12px}
 .brand{font-stretch:125%;font-weight:800;letter-spacing:.02em;color:var(--ink);font-size:15px}
 .mast small{color:var(--soft);font-size:14px}
+.nav{display:flex;gap:20px;font-size:15px}.nav a{text-decoration:none;font-weight:600}.nav a:hover{text-decoration:underline}
 
 /* hero */
 .hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);grid-template-areas:"intro sheet" "controls sheet";grid-template-rows:auto 1fr;column-gap:48px;padding:48px 0 56px;align-items:start}
@@ -93,6 +94,37 @@ h2{font-stretch:125%;font-weight:750;font-size:clamp(24px,3vw,34px);line-height:
 .rung figcaption{padding-top:8px;font-size:14px;line-height:1.35}
 .rung figcaption b{display:block;font-stretch:120%;font-size:20px;color:var(--ink)}
 
+.series{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media(max-width:700px){.series{grid-template-columns:1fr}}
+.series figure{margin:0}.series canvas{display:block;width:100%;height:auto;border:1px solid var(--rule)}
+.series figcaption{padding-top:8px;font-size:14.5px;line-height:1.4}.series figcaption b{font-stretch:115%;color:var(--ink)}
+/* robotics chrome */
+.status{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--soft);font-stretch:85%;font-weight:600;border:1px solid var(--rule);padding:4px 10px 4px 9px;background:var(--sheet)}
+.status i{width:8px;height:8px;border-radius:50%;background:#b9bccf;display:inline-block}
+.status.on i{background:#1fa37a;box-shadow:0 0 0 0 rgba(31,163,122,.5);animation:ping 2.4s ease-out infinite}
+.status.off i{background:var(--redline)}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(31,163,122,.45)}70%{box-shadow:0 0 0 7px rgba(31,163,122,0)}100%{box-shadow:0 0 0 0 rgba(31,163,122,0)}}
+.mastR{display:flex;align-items:center;gap:22px}
+.status[hidden]{display:none}
+.status .short{display:none}
+.brand{white-space:nowrap}
+@media(max-width:600px){.brand{font-size:13px}.nav{font-size:14px}.status .long{display:none}.status .short{display:inline}.mastR{gap:14px}.nav{gap:14px}}
+.sheetframe{--m:14px}
+.sheetframe .reg{position:absolute;width:18px;height:18px;border-color:var(--ink);border-style:solid;pointer-events:none}
+.reg.tl{top:-7px;left:-7px;border-width:2px 0 0 2px}.reg.tr{top:-7px;right:-7px;border-width:2px 2px 0 0}
+.reg.bl{bottom:-7px;left:-7px;border-width:0 0 2px 2px}.reg.br{bottom:-7px;right:-7px;border-width:0 2px 2px 0}
+.canvaswrap{position:relative}
+#big{cursor:crosshair}
+.coords{position:absolute;left:10px;bottom:10px;font:600 12px/1 ui-monospace,Menlo,monospace;color:#fff;background:rgba(38,40,124,.86);padding:6px 8px;letter-spacing:.02em;opacity:0;transition:opacity .15s;pointer-events:none;font-variant-numeric:tabular-nums}
+.canvaswrap:hover .coords{opacity:1}
+.sheetno{display:block;font-stretch:80%;font-weight:650;font-size:13.5px;color:var(--soft);margin:0 0 6px;letter-spacing:.01em}
+.sheetno b{color:var(--ink)}
+.record dd{transition:color .3s}
+.record dd.tick{color:var(--ink)}
+.tile canvas,.rung canvas,.series canvas{background:var(--sheet)}
+.tile{transition:border-color .15s, transform .15s}
+.tile:hover{transform:translateY(-2px)}
+@media (prefers-reduced-motion: reduce){.status.on i{animation:none}.tile:hover{transform:none}}
 /* sheet index */
 .index{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
 .tile{background:var(--sheet);border:1px solid var(--rule);padding:0;text-align:left;cursor:pointer;color:var(--graphite);font-weight:400;font-stretch:100%;border-radius:0}
@@ -120,7 +152,8 @@ footer p{max-width:46em;margin:0 0 8px}
 <body>
 <header class="mast"><div class="wrap">
   <a class="brand" href="https://www.arkain.studio/" style="text-decoration:none">ARKAIN STUDIO</a>
-  <small>Grant demo for the peaq ecosystem</small>
+  <div class="mastR"><span class="status" id="status" hidden><i></i><span class="long">peaq MCR API live</span><span class="short">Live</span></span>
+  <nav class="nav"><a href="/methodology">Methodology</a><a href="https://github.com/ArkainStudio/machine-elevations">GitHub</a></nav></div>
 </div></header>
 
 <main class="wrap">
@@ -155,7 +188,8 @@ footer p{max-width:46em;margin:0 0 8px}
 
     <div class="h-sheet">
       <div class="sheetframe">
-        <canvas id="big" aria-label="Machine elevation drawing"></canvas>
+        <span class="reg tl"></span><span class="reg tr"></span><span class="reg bl"></span><span class="reg br"></span>
+        <div class="canvaswrap"><canvas id="big" aria-label="Machine elevation drawing"></canvas><span class="coords" id="coords">X 00 · Y 00 PX</span></div>
         <div class="plate"><b id="plateName">—</b><span id="src" class="sample">Sample data</span></div>
       </div>
       <dl class="record" id="readout"></dl>
@@ -163,12 +197,21 @@ footer p{max-width:46em;margin:0 0 8px}
   </div>
 
   <section>
+    <span class="sheetno"><b>Sheet 02</b> · Finish schedule</span>
     <h2>The finish is the credit rating</h2>
     <p class="intro">A machine is drafted on plain paper until peaqOS rates it. As its Machine Credit Rating rises, the same drawing is reprinted in a richer finish, from field print to approved blueprint to gilded. Here is Woon at each stage.</p>
     <div class="ladder" id="ladder"></div>
   </section>
 
   <section>
+    <span class="sheetno"><b>Sheet 03</b> · Body system</span>
+    <h2>The peaq series</h2>
+    <p class="intro">The demo borrows bodies from GRID_ARCHITECT_SERIES. The production version gets its own body system, drawn only for peaq: <b>modular heads, hulls, drives and tools in peaq's white, indigo and cyan</b>, matched to each machine type. These are the first two prototypes.</p>
+    <div class="series" id="series"></div>
+  </section>
+
+  <section>
+    <span class="sheetno"><b>Sheet 04</b> · Register</span>
     <h2>Sheet index</h2>
     <p class="intro">Real machines read from the peaq MCR API, followed by an invented fleet that shows every state a machine can be in.</p>
     <div class="subhead">Real machines on peaq</div>
@@ -178,6 +221,7 @@ footer p{max-width:46em;margin:0 0 8px}
   </section>
 
   <section>
+    <span class="sheetno"><b>Sheet 05</b> · Legend</span>
     <h2>Drawing legend</h2>
     <p class="intro">Every mark on the sheet comes from the machine's record. Nothing is random at draw time.</p>
     <dl class="legend">
@@ -195,7 +239,7 @@ footer p{max-width:46em;margin:0 0 8px}
 
 <footer><div class="wrap">
   <p>Real machine records were read from the peaq MCR API on 3 November 2026 and may have changed since. The sample fleet (demo-01 to demo-09) is invented. The page reads each machine's record from the MCR API when your browser allows it. If it can't, paste the API response instead.</p>
-  <p>Bodies are drawn from GRID_ARCHITECT_SERIES by ARKAIN STUDIO, used here for the demo only.</p>
+  <p>Bodies are drawn from GRID_ARCHITECT_SERIES by ARKAIN STUDIO, used here for the demo only, except the peaq series prototypes. How it works: <a href="/methodology">methodology</a>.</p>
 </div></footer>
 
 <script>
@@ -507,6 +551,11 @@ class Sheet {
 
 </script>
 <script>
+const PEAQ_UNITS=[{"id":1,"code":"PQ-C01","name":"Courier","cls":"Courier","frame":"Wheeled","chassis":"peaq White","w":64,"h":62,"pal":["#000000","#170E13","#FBF7EE","#E6E1D6","#BDB6AA","#8E877D","#2A2A3A","#3B3B52","#7DE3F0","#C8F6FC","#6366F1","#8B8CF6","#4446B8","#EDB45A","#55505A","#7A7480"],"rows":["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbaaaaaaaaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaaaaaaabhhhhhhhgggbaaaaaaaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaaaaaaabhhhhhhhgggbaaaaaaaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaaaaaaabhhhhhhhgggbaaaaaaaaaaaaaaaaaaaaaaaaaa","aaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaa","aaaaaaabbcdddddddddddddddddddddddddddddddddddddddddddeebbaaaaaaa","aaaaaabccdddddddddddddddddddddddddddddddddddddddddddddeeebaaaaaa","aaaaaabccdddddddddddddddddddddddddddddddddddddddddddddeeebaaaaaa","aaaaabccdddddddddddddddddddddddddddddddddddddddddddddddeeebaaaaa","aaaaabccdddddddddddddddddddddddddddddddddddddddddddddddeeebaaaaa","aaaaabccdddddddddddddddddddddddddddddddddddddddddddddddeeebaaaaa","aaaaabccdddddddddddddddddddddddddddddddddddddddddddddddeeebaaaaa","aaaaabcceeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeebaaaaa","aaaaabcccccccccccccccccccccccccccccccccccccccccccccccccceebaaaaa","aaaaabccdddddddddddddddddddddddddddddddddddddddddddddddeeebaaaaa","aaaaabccdddddddddddddddddddddddddddddddddddddddddddddddeeebaaaaa","aaaaabccdddddddddddddddddddddddddddddddddddddddddddddddeeebaaaaa","aaaaabccdddddddddddddddddddddddddddddddddddddddddddddddeeebaaaaa","aaaaabccdddddddbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbddddddeeebaaaaa","aaaaabccdddddbbhgggggggggggggggggggggggggggggggggbbddddeeebaaaaa","aaaaabccdddddbhhggggggggggggggggggggggggggggggggggbddddeeebaaaaa","aaaaabccddddbhhggggggggggggggggggggggggggggggggggggbdddeeebaaaaa","aaaaabccddddbhhggggggiiiiiggggggggggggiiiiiggggggggbdddeeebaaaaa","aaaaabccddddbhhgggggijiiiiiggggggggggijiiiiigggggggbdddeeebaaaaa","aaaaabccddddbhhggggijiiiiiiiggggggggijiiiiiiiggggggbdddeeebaaaaa","aaaaabccddddbhhgggiiigggggiiiggggggiiigggggiiigggggbdddeeebaaaaa","aaaaabccddddbhhgggiiigggggiiiggggggiiigggggiiigggggbdddeeebaaaaa","aaaaabccddddbhhgggiiigggggiiiggggggiiigggggiiigggggbdddeeebaaaaa","aaaaabccddddbhhgggiiigggggiiiggggggiiigggggiiigggggbdddeeebaaaaa","aaaaabccddddbhhgggiiigggggiiiggggggiiigggggiiigggggbdddeeebaaaaa","aaaaabccddddbhhggggiiiiiiiiiggggggggiiiiiiiiiggggggbdddeeebaaaaa","aaaaabccddddbhhgggggiiiiiiiggggggggggiiiiiiigggggggbdddeeebaaaaa","aaaaabccddddbhhggggggiiiiiggggggggggggiiiiiggggggggbdddeeebaaaaa","aaaaabccddddbhhggggggggggggggggggggggggggggggggggggbdddeeebaaaaa","aaaaabccddddbhhggggggggggggggggggggggggggggggggggggbdddeeebaaaaa","aaaaabccdddddbhhggggggggggggggggggggggggggggggggggbddddeeebaaaaa","aaaaabccdddddbbhgggggggggggggggggggggggggggggggggbbddddeeebaaaaa","aaaaabccdddddddbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbddddddeeebaaaaa","aaabbbbbbbbddddddddddddddddddddddddddddddddddddddddddbbbbbbbbaaa","aabppoooooobddddddddddddddddddddddddddddddddddddddddbppoooooobaa","abppoooooooobddddbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbddddbppooooooooba","abppoooooooobddddblllllllllllllllllllllllllkkkbddddbppooooooooba","abppoooooooobddddbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbddddbppooooooooba","abppoooooooobddddddddddddddddddddddddddddddddddddddbppooooooooba","abppoooooooobddddddddddddddddddddddddddddddddddddddbppooooooooba","abppobbboooobbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbppobbbooooba","abppbpppbooobaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabppbpppboooba","abpbpphppboobaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabpbpphppbooba","abpbphhhpboobaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabpbphhhpbooba","abpbpphppboobaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabpbpphppbooba","abppbpppbooobaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabppbpppboooba","abppobbboooobaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabppobbbooooba","abppoooooooobaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabppooooooooba","abppoooooooobaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabppooooooooba","abppoooooooobaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabppooooooooba","abppoooooooobaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabppooooooooba","aabppoooooobaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabppoooooobaa","aaabbbbbbbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbaaa","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"],"anchors":{"eye":[31,29],"core":[31,43],"arm":[8,24],"leg":[6,50],"head":7,"eyePix":[[21,24],[22,24],[23,24],[24,24],[25,24],[20,25],[21,25],[22,25],[23,25],[24,25],[25,25],[26,25],[19,26],[20,26],[21,26],[22,26],[23,26],[24,26],[25,26],[26,26],[27,26],[18,27],[19,27],[20,27],[26,27],[27,27],[28,27],[18,28],[19,28],[20,28],[26,28],[27,28],[28,28],[18,29],[19,29],[20,29],[26,29],[27,29],[28,29],[18,30],[19,30],[20,30],[26,30],[27,30],[28,30],[18,31],[19,31],[20,31],[26,31],[27,31],[28,31],[19,32],[20,32],[21,32],[22,32],[23,32],[24,32],[25,32],[26,32],[27,32],[20,33],[21,33],[22,33],[23,33],[24,33],[25,33],[26,33],[21,34],[22,34],[23,34],[24,34],[25,34],[38,24],[39,24],[40,24],[41,24],[42,24],[37,25],[38,25],[39,25],[40,25],[41,25],[42,25],[43,25],[36,26],[37,26],[38,26],[39,26],[40,26],[41,26],[42,26],[43,26],[44,26],[35,27],[36,27],[37,27],[43,27],[44,27],[45,27],[35,28],[36,28],[37,28],[43,28],[44,28],[45,28],[35,29],[36,29],[37,29],[43,29],[44,29],[45,29],[35,30],[36,30],[37,30],[43,30],[44,30],[45,30],[35,31],[36,31],[37,31],[43,31],[44,31],[45,31],[36,32],[37,32],[38,32],[39,32],[40,32],[41,32],[42,32],[43,32],[44,32],[37,33],[38,33],[39,33],[40,33],[41,33],[42,33],[43,33],[38,34],[39,34],[40,34],[41,34],[42,34]]},"labels":["RING OPTICS","STATUS STRIP","CARGO HULL","TERRAIN WHEEL"],"coreIdx":11},{"id":2,"code":"PQ-H01","name":"Operator","cls":"Operator","frame":"Humanoid","chassis":"peaq White","w":56,"h":90,"pal":["#000000","#170E13","#FBF7EE","#E6E1D6","#BDB6AA","#8E877D","#2A2A3A","#3B3B52","#7DE3F0","#C8F6FC","#6366F1","#8B8CF6","#4446B8","#EDB45A","#55505A","#7A7480"],"rows":["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaabccdddddddeeebaaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaabccdddddddddeeebaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaabccdddddddddddeeebaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabccdddddddddddddeeebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabccdddddddddddddeeebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabccdbbbbbbbbbbbbeeebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabccbhhggggggggggbeebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabcbhjggggggggggigbebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabcbhjggggggggggigbebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabcbhjggggggggggigbebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabcbhiggggggggggigbebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabcbhiggggggggggigbebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabcbhiggggggggggigbebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabcbhiggggggggggigbebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabcbhiggggggggggigbebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaabcbiiiiiiiiiiiibebaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaabcbbbbbbbbbbbbebaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaabccdddddddeeebaaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaaaaabhhhgggbaaaaaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaaaaabhhhgggbaaaaaaaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaa","aaaaabbbbbbbbabbcdddddddddddddddddddddeebbabbbbbbbbaaaaa","aaaabccdddeeebbccdddddddddddddddddddddeeebbccdddeeebaaaa","aaaabccdddeeebccdddddddddddddddddddddddeeebccdddeeebaaaa","aaaabccdddeeebccdddddddddddddddddddddddeeebccdddeeebaaaa","aaaabccdddeeebccddddbbbbbbbbbbbbbbbbdddeeebccdddeeebaaaa","aaaabccdddeeebccdddbddeeeeeeeeeeeeeebddeeebccdddeeebaaaa","aaaabccdddeeebccdddbddeeeebbbeeeeeeebddeeebccdddeeebaaaa","aaaabccdddeeebccdddbddeebblkkbbeeeeebddeeebccdddeeebaaaa","aaaabccdddeeebccdddbddeebllkkkbeeeeebddeeebccdddeeebaaaa","aaaaabbbbbbbbbccdddbddebllllkkkbeeeebddeeebbbbbbbbbaaaaa","aaaaaabcceebabccdddbddebllllkkkbeeeebddeeebabcceebaaaaaa","aaaaaabcceebabccdddbddebllllkkkbeeeebddeeebabcceebaaaaaa","aaaaaabcceebabccdddbddeebllkkkbeeeeebddeeebabcceebaaaaaa","aaaaaabcceebabccdddbddeebblkkbbeeeeebddeeebabcceebaaaaaa","aaaaaabcceebabccdddbddeeeebbbeeeeeeebddeeebabcceebaaaaaa","aaaaaabcceebabccdddbddeeeeeeeeeeeeeebddeeebabcceebaaaaaa","aaaaaabcceebabccdddbddeeeeeeeeeeeeeebddeeebabcceebaaaaaa","aaaaaabcceebabccddddbbbbbbbbbbbbbbbbdddeeebabcceebaaaaaa","aaaaaabcceebabccdddddddddddddddddddddddeeebabcceebaaaaaa","aaaaaabcceebabccdddddddddddddddddddddddeeebabcceebaaaaaa","aaaaaabcceebabccdddddddddddddddddddddddeeebabcceebaaaaaa","aaaaaabbbbbbabccdddddddddddddddddddddddeeebabbbbbbaaaaaa","aaaaaabhhggbaabccdddddddddddddddddddddeeebaabhhggbaaaaaa","aaaaaabhhggbaabbcdddddddddddddddddddddeebbaabhhggbaaaaaa","aaaaaabbbbbbaaaabbbbbbbbbbbbbbbbbbbbbbbbaaaabbbbbbaaaaaa","aaaaaabcceebaaaaaabhhhhhhhhhhhhhhhgggbaaaaaabcceebaaaaaa","aaaaaabcceebaaaaaabhhhhhhhhhhhhhhhgggbaaaaaabcceebaaaaaa","aaaaaabcceebaaaaaabhhhhhhhhhhhhhhhgggbaaaaaabcceebaaaaaa","aaaaaabcceebaaaaaabhhhhhhhhhhhhhhhgggbaaaaaabcceebaaaaaa","aaaaaabcceebaaaaaabhhhhhhhhhhhhhhhgggbaaaaaabcceebaaaaaa","aaaaaabcceebaaaaaabhhhhhhhhhhhhhhhgggbaaaaaabcceebaaaaaa","aaaaaabcceebaaaaaaabbbbbbbbbbbbbbbbbbaaaaaaabcceebaaaaaa","aaaaaabcceebaaaaaabccdeeebaaaabccdeeebaaaaaabcceebaaaaaa","aaaaaabcceebaaaaaabccdeeebaaaabccdeeebaaaaaabcceebaaaaaa","aaaaaabcceebaaaaaabccdeeebaaaabccdeeebaaaaaabcceebaaaaaa","aaaaaabbbbbbaaaaaabccdeeebaaaabccdeeebaaaaaabbbbbbaaaaaa","aaaaabhhhgggbaaaaabccdeeebaaaabccdeeebaaaaabhhhgggbaaaaa","aaaaabhhhgggbaaaaabccdeeebaaaabccdeeebaaaaabhhhgggbaaaaa","aaaaabhhhgggbaaaaabccdeeebaaaabccdeeebaaaaabhhhgggbaaaaa","aaaaabhhhgggbaaaaabccdeeebaaaabccdeeebaaaaabhhhgggbaaaaa","aaaaaabbbbbbaaaaaabccdeeebaaaabccdeeebaaaaaabbbbbbaaaaaa","aaaaaaaaaaaaaaaaaabccdeeebaaaabccdeeebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabccdeeebaaaabccdeeebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabccdeeebaaaabccdeeebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabbbbbbbbaaaabbbbbbbbaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabhhhgggbaaaabhhhgggbaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabhhhgggbaaaabhhhgggbaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabbbbbbbbaaaabbbbbbbbaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabccdeeebaaaabccdeeebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabccdeeebaaaabccdeeebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabccdeeebaaaabccdeeebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabccdeeebaaaabccdeeebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabccdeeebaaaabccdeeebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabccdeeebaaaabccdeeebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabccdeeebaaaabccdeeebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabccdeeebaaaabccdeeebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabccdeeebaaaabccdeeebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabccdeeebaaaabccdeeebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaabccdeeebaaaabccdeeebaaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaabbbbbbbbbbaabbbbbbbbbbaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaabhhhhhhhgggbbhhhhhhhgggbaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaabhhhhhhhgggbbhhhhhhhgggbaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaabhhhhhhhgggbbhhhhhhhgggbaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaabbbbbbbbbbaabbbbbbbbbbaaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"],"anchors":{"eye":[27,14],"core":[27,35],"arm":[8,55],"leg":[21,78],"head":6,"eyePix":[[22,10],[33,10],[22,11],[33,11],[22,12],[33,12],[22,13],[33,13],[22,14],[33,14],[22,15],[33,15],[22,16],[33,16],[22,17],[33,17],[22,18],[23,18],[24,18],[25,18],[26,18],[27,18],[28,18],[29,18],[30,18],[31,18],[32,18],[33,18]]},"labels":["U-VISOR","INDIGO CORE","SERVO ARM","BIPED DRIVE"],"coreIdx":11}];
+function peaqModel(did,data,unit,name){const m=buildModel(did,data,"sample");m.unit=unit;m.name=name;return m;}
+
+</script>
+<script>
 // ---------- data ----------
 const OP = 'did:peaq:0xDEMO0000000000000000000000000000000000';
 const SAMPLES = [
@@ -537,6 +586,12 @@ const LADDER = [
   ['AAA', 'Gilded', 'Top of the scale', 'AAA', 5000],
 ];
 
+// ---------- peaq series ----------
+const SERIES = [
+  [PEAQ_UNITS[0], 'did:peaq:courier-01', 'PQ Courier · Delivery', { mcr: 'BB', mcr_score: 46, bond_status: 'bonded', event_count: 640, revenue_trend: 'up', operator: 'did:peaq:0xpeaqfleet' }, '<b>PQ Courier.</b> A delivery robot with ring optics, a cargo hull and an indigo status strip. Drawn here at BB, on Field paper.'],
+  [PEAQ_UNITS[1], 'did:peaq:operator-01', 'PQ Operator · Humanoid', { mcr: 'Provisioned', mcr_score: 0, bond_status: 'bonded', event_count: 0, operator: 'did:peaq:0xpeaqfleet' }, '<b>PQ Operator.</b> A humanoid with a U-visor and an indigo core. Just activated, so it is still on drafting paper.'],
+].map(([u, did, name, data, cap]) => Object.assign(peaqModel(did, data, u, name), { cap }));
+
 // ---------- page ----------
 const $ = id => document.getElementById(id);
 const big = $('big');
@@ -556,14 +611,56 @@ function show(model) {
     ['Finish', model.finish], ['Events', model.events], ['Bond', model.bond === '—' ? '—' : model.bond[0].toUpperCase() + model.bond.slice(1)],
     ['Revenue trend', trend], ['Home chain', model.home || '—'], ['Body', model.unit.frame + ' ' + model.unit.cls.toLowerCase()], ['Grid', model.grid],
   ];
-  let html = cells.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('');
+  let html = cells.map(([k, v]) => `<div><dt>${k}</dt><dd${k === 'Events' ? ' id="cuEv"' : ''}>${esc(v)}</dd></div>`).join('');
   html += `<div class="span"><dt>peaqID</dt><dd>${esc(model.did)}</dd></div>`;
   if (model.unavailable) html += `<div class="span"><dt>Rating note</dt><dd>${esc(model.unavailable.replace(/_/g, ' '))}</dd></div>`;
   if (model.flagged) html += `<div class="span"><dt>Flag</dt><dd>Negative flag set by peaqOS</dd></div>`;
   $('readout').innerHTML = html;
+  const ev = $('cuEv'); if (ev) countUp(ev, model.events);
   document.querySelectorAll('.tile').forEach(c => c.classList.toggle('on', c.dataset.did === model.did));
 }
-function loop(now) { if (sheet) sheet.draw(now - t0); requestAnimationFrame(loop); }
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const PLOT_MS = REDUCED ? 0 : 1100;
+let hover = null;
+function plotOverlay(s, t) {
+  if (t >= PLOT_MS) return;
+  const ctx = s.ctx, S = s.S, k = t / PLOT_MS, e = 1 - Math.pow(1 - k, 2), y = Math.round(S * e);
+  ctx.fillStyle = s.TH.bg; ctx.fillRect(0, y, S, S - y);
+  const g = ctx.createLinearGradient(0, y - 28, 0, y);
+  g.addColorStop(0, 'rgba(125,227,240,0)'); g.addColorStop(1, 'rgba(125,227,240,0.35)');
+  ctx.fillStyle = g; ctx.fillRect(0, y - 28, S, 28);
+  ctx.fillStyle = '#7DE3F0'; ctx.fillRect(0, y - 1, S, 2);
+  const hx = (S * 0.15) + ((t * 0.9) % (S * 0.7));
+  ctx.fillStyle = '#26287C'; ctx.fillRect(hx - 9, y - 5, 18, 10); ctx.fillStyle = '#7DE3F0'; ctx.fillRect(hx - 2, y - 2, 4, 4);
+}
+function crosshair(s) {
+  if (!hover) return;
+  const ctx = s.ctx, S = s.S;
+  ctx.save(); ctx.strokeStyle = 'rgba(38,40,124,0.55)'; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+  ctx.beginPath(); ctx.moveTo(0, hover.y + .5); ctx.lineTo(S, hover.y + .5); ctx.moveTo(hover.x + .5, 0); ctx.lineTo(hover.x + .5, S); ctx.stroke();
+  ctx.setLineDash([]); ctx.strokeStyle = '#26287C'; ctx.lineWidth = 1.5; ctx.strokeRect(hover.x - 7, hover.y - 7, 14, 14); ctx.restore();
+}
+const live = new Set(); let lastThumb = 0;
+function loop(now) {
+  if (sheet) { const t = now - t0; sheet.draw(t); crosshair(sheet); plotOverlay(sheet, t); }
+  if (!REDUCED && now - lastThumb > 80) { lastThumb = now; live.forEach(o => o.sheet.draw(4000 + now * 1 + o.off)); }
+  requestAnimationFrame(loop);
+}
+big.addEventListener('mousemove', ev => {
+  if (!sheet) return; const r = big.getBoundingClientRect(), sx = sheet.S / r.width;
+  const x = (ev.clientX - r.left) * sx, y = (ev.clientY - r.top) * sx; hover = { x, y };
+  const ax = Math.round((x - sheet.ox) / sheet.P), ay = Math.round((y - sheet.oy) / sheet.P);
+  const inside = ax >= 0 && ay >= 0 && ax < sheet.SW && ay < sheet.SH;
+  $('coords').textContent = inside ? `X ${String(ax).padStart(2, '0')} · Y ${String(ay).padStart(2, '0')} PX · 1:16` : `X — · Y — · ${sheet.m.finish.toUpperCase()}`;
+});
+big.addEventListener('mouseleave', () => { hover = null; });
+const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => { const o = e.target._live; if (!o) return; e.isIntersecting ? live.add(o) : live.delete(o); }), { rootMargin: '100px' }) : null;
+function liveCanvas(cv, m, size) { const s = new Sheet(cv, m, size); s.draw(4000); const o = { sheet: s, off: Math.floor(Math.random() * 0) + (m.hash ? parseInt(m.hash.slice(2, 6), 16) : 0) }; cv._live = o; if (io) io.observe(cv); return s; }
+function countUp(el, to, suffix) {
+  if (REDUCED || !Number.isFinite(to)) return; const t0c = performance.now();
+  const step = now => { const k = Math.min(1, (now - t0c) / 700), v = Math.round(to * (1 - Math.pow(1 - k, 3))); el.textContent = v + (suffix || ''); if (k < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
 
 function tiles(host, models) {
   models.forEach(m => {
@@ -573,18 +670,24 @@ function tiles(host, models) {
     const tag = m.source === 'live' ? '<span class="tag">Live</span>' : '';
     cap.innerHTML = `<b>${esc(m.name)}</b>${tag}<br>${esc(m.rating || 'NR')}, ${esc(m.note || '')}`;
     b.appendChild(cap); host.appendChild(b);
-    new Sheet(cv, m, 360).draw(4000);
+    liveCanvas(cv, m, 360);
     b.addEventListener('click', () => { show(m); big.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' }); });
   });
 }
 tiles($('real'), REAL); tiles($('fleet'), SAMPLES);
+SERIES.forEach(m => {
+  const f = document.createElement('figure'); const cv = document.createElement('canvas'); f.appendChild(cv);
+  const cap = document.createElement('figcaption'); cap.innerHTML = m.cap; f.appendChild(cap);
+  f.style.cursor = 'pointer'; f.addEventListener('click', () => { show(m); big.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+  $('series').appendChild(f); liveCanvas(cv, m, 720);
+});
 
 LADDER.forEach(([grade, finish, desc, mcr, ev]) => {
   const m = buildModel(WOON, { name: 'Woon', mcr, mcr_score: 0, bond_status: 'bonded', event_count: ev, home_chain: 5 }, 'sample');
   const f = document.createElement('figure'); f.className = 'rung';
   const cv = document.createElement('canvas'); f.appendChild(cv);
   const cap = document.createElement('figcaption'); cap.innerHTML = `<b>${grade}</b>${finish}. ${desc}.`; f.appendChild(cap);
-  $('ladder').appendChild(f); new Sheet(cv, m, 320).draw(4000);
+  $('ladder').appendChild(f); liveCanvas(cv, m, 320);
 });
 
 const msg = (s, err) => { const el = $('msg'); el.textContent = s; el.className = 'msg' + (err ? ' err' : ''); };
@@ -667,6 +770,15 @@ $('apply').addEventListener('click', () => {
 let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { if (current) { const k = performance.now() - t0; show(current); t0 = performance.now() - k; } }, 150); });
 show(REAL[0]);
 requestAnimationFrame(loop);
+(async () => {
+  const st = $('status');
+  if (!/^https?:$/.test(location.protocol)) return;
+  try {
+    const ctl = new AbortController(); setTimeout(() => ctl.abort(), 9000);
+    const r = await fetch('/api/mcr?did=' + encodeURIComponent(WOON), { signal: ctl.signal });
+    if (r.ok) { st.className = 'status on'; st.hidden = false; }
+  } catch (e) {}
+})();
 </script>
 </body>
 </html>

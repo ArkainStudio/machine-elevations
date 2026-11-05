@@ -4,7 +4,7 @@
 
 Machine Elevations draws each machine on [peaq](https://www.peaq.xyz/) as an architectural front elevation: dimension lines, callouts and a title block at scale 1:16. The drawing is generated from the machine's peaqID and its record in peaqOS. The same ID always gives the same drawing, and the drawing changes only when the record changes.
 
-Live demo: **https://machine-elevations.vercel.app**
+Live demo: **https://machine-elevations.vercel.app** · Methodology: **https://machine-elevations.vercel.app/methodology**
 
 ## How data becomes a drawing
 
@@ -19,6 +19,10 @@ Live demo: **https://machine-elevations.vercel.app**
 | Revenue trend, home chain | Recorded in the title block |
 
 Nothing is random at draw time. Rendering uses only the seed and the record.
+
+## The peaq series
+
+The demo borrows bodies from GRID_ARCHITECT_SERIES. The production version gets its own modular body system, drawn only for peaq in white, indigo and cyan. The first two prototypes, PQ Courier (delivery robot) and PQ Operator (humanoid), are shown on the demo page.
 
 ## Data source
 
@@ -39,7 +43,8 @@ This is the proof of concept for a peaq ecosystem grant proposal. Planned next:
 
 1. An open-source rendering library with a live data adapter and determinism tests
 2. A new body system drawn for peaq machine types, and an image and metadata service per DID
-3. A public gallery, fleet sheets per operator, and an embeddable widget for DePIN apps
+3. Elevation certificates: a dated, verifiable snapshot of a machine's identity, rating and history
+4. A public gallery, fleet sheets per operator, and an embeddable widget for DePIN apps
 
 ## Credits and licence
 
@@ -47,3 +52,9 @@ Designed and built by Amir Keshavarzian ([Arkain](https://x.com/ArkainArt)), [AR
 
 - Code: MIT licence (see `LICENSE`)
 - Artwork: the robot bodies in this demo come from GRID_ARCHITECT_SERIES by ARKAIN STUDIO and are © ARKAIN STUDIO, used here for the demo only. Artwork made for the peaq version will be released under CC BY 4.0.
+
+## Changelog
+
+- **v0.3.0 (5 Nov 2026):** robotics interface (plotter reveal, CAD crosshair and coordinates, live API status), animated thumbnails, peaq series prototypes (PQ Courier, PQ Operator), methodology page.
+- **v0.2.0 (4 Nov 2026):** live MCR records through `/api/mcr`, Solana-homed machines, legacy DID handling.
+- **v0.1.0 (3 Nov 2026):** first demo with sample fleet and pasted API data.
