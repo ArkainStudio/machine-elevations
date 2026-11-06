@@ -22,7 +22,7 @@ Nothing is random at draw time. Rendering uses only the seed and the record.
 
 ## The peaq series
 
-The demo borrows bodies from GRID_ARCHITECT_SERIES. The production version gets its own modular body system, drawn only for peaq in white, indigo and cyan. The first two prototypes, PQ Courier (delivery robot) and PQ Operator (humanoid), are shown on the demo page.
+The demo borrows bodies from GRID_ARCHITECT_SERIES. The production version gets its own modular body system, drawn only for peaq in white, indigo and cyan. The first three prototypes, PQ Courier (delivery robot), PQ Operator (humanoid) and PQ Listener (sensor), are shown on the demo page. The Listener is the first body picked by machine type: any machine of type sensor is drawn with it.
 
 ## Data source
 
@@ -55,6 +55,7 @@ Designed and built by Amir Keshavarzian ([Arkain](https://x.com/ArkainArt)), [AR
 
 ## Changelog
 
+- **v0.4.0 (6 Nov 2026):** PQ Listener, the first body picked by machine type (any sensor is drawn as a Listener); a Type field in the form; a real Silencio sensor in the sheet index.
 - **v0.3.0 (5 Nov 2026):** robotics interface (plotter reveal, CAD crosshair and coordinates, live API status), animated thumbnails, peaq series prototypes (PQ Courier, PQ Operator), methodology page.
 - **v0.2.0 (4 Nov 2026):** live MCR records through `/api/mcr`, Solana-homed machines, legacy DID handling.
 - **v0.1.0 (3 Nov 2026):** first demo with sample fleet and pasted API data.
