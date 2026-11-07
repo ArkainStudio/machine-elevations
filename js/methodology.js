@@ -7,3 +7,8 @@
   fc.textContent = cap; f.appendChild(cv); f.appendChild(fc); document.getElementById('figs').appendChild(f);
   new Sheet(cv, peaqModel(did, data, u, name), 640).draw(4000);
 });
+
+(() => { const links=[...document.querySelectorAll('.side .toc a')]; const secs=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  if(!('IntersectionObserver' in window)) return;
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{ if(e.isIntersecting){ links.forEach(a=>a.classList.toggle('cur',a.getAttribute('href')==='#'+e.target.id)); }});},{rootMargin:'-30% 0px -60% 0px'});
+  secs.forEach(s=>io.observe(s)); })();

@@ -80,6 +80,7 @@ Designed and built by Amir Keshavarzian ([Arkain](https://x.com/ArkainArt)), [AR
 
 ## Changelog
 
+- **v0.5.1 (7 Nov 2026):** methodology page gets a sticky contents sidebar and a centred reading column; sheet index tiles align and show the selected machine with an ink outline.
 - **v0.5.0 (7 Nov 2026):** the site is split into separate HTML, CSS and JS files; social preview image, favicon and page metadata; LICENSE file; README images and project structure.
 - **v0.4.2 (7 Nov 2026):** new PQ Arcade body for claw machines, with The Claw #0981 by DualMint in the sheet index; claw machine added to the Type field.
 - **v0.4.1 (7 Nov 2026):** the real Booster K1 (a humanoid in the peaq Machine Explorer) is now named and drawn as a PQ Operator; humanoid added to the Type field.

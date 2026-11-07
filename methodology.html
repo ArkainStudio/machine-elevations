@@ -37,11 +37,17 @@
   <nav class="nav"><a href="/">Demo</a><a href="https://github.com/ArkainStudio/machine-elevations">GitHub</a></nav>
 </div></header>
 
-<main class="wrap">
+<main class="wrap layout">
+  <aside class="side"><div class="side-in">
+    <p class="side-k">Contents</p>
+    <nav class="toc"><a href="#principles">Principles</a><a href="#data">Data</a><a href="#mapping">Mapping</a><a href="#determinism">Determinism</a><a href="#bodies">Bodies</a><a href="#architecture">Architecture</a><a href="#limits">Limits</a><a href="#roadmap">Roadmap</a></nav>
+    <a class="side-cta" href="/">Open the live demo →</a>
+  </div></aside>
+  <div class="body">
   <div class="doc" style="padding:48px 0 8px">
     <h1>How a machine becomes a drawing</h1>
     <p class="lead">Machine Elevations reads a machine's public record from peaqOS and draws it as an architectural front elevation. <b>Nothing is random at draw time:</b> the same machine always gives the same drawing, and the drawing changes only when the machine's record changes.</p>
-    <nav class="toc"><a href="#principles">Principles</a><a href="#data">Data</a><a href="#mapping">Mapping</a><a href="#determinism">Determinism</a><a href="#bodies">Bodies</a><a href="#architecture">Architecture</a><a href="#limits">Limits</a><a href="#roadmap">Roadmap</a></nav>
+    <nav class="inline-toc"><a href="#principles">Principles</a><a href="#data">Data</a><a href="#mapping">Mapping</a><a href="#determinism">Determinism</a><a href="#bodies">Bodies</a><a href="#architecture">Architecture</a><a href="#limits">Limits</a><a href="#roadmap">Roadmap</a></nav>
   </div>
 
   <section id="principles"><div class="doc">
@@ -61,7 +67,7 @@
       <li><code>mcr.peaq.xyz/mcr/did:peaq:&lt;id&gt;</code> for machines homed on peaq</li>
       <li><code>mcr-20.peaq.xyz/mcr/did:peaq:&lt;id&gt;</code> for machines homed on Solana</li>
     </ul>
-    <p>The fields used are <code>mcr</code>, <code>mcr_score</code>, <code>event_count</code>, <code>bond_status</code>, <code>negative_flag</code>, <code>revenue_trend</code>, <code>home_chain</code> and <code>rating_unavailable</code>. Activated machines can be browsed at <a href="https://app.peaq.xyz/machines">app.peaq.xyz/machines</a>.</p>
+    <p>The fields used are <code>mcr</code>, <code>mcr_score</code>, <code>event_count</code>, <code>bond_status</code>, <code>negative_flag</code>, <code>revenue_trend</code>, <code>home_chain</code> and <code>rating_unavailable</code>. Activated machines can be browsed at the <a href="https://machines.peaq.xyz/">peaq Machine Explorer</a>.</p>
   </div></section>
 
   <section id="mapping"><div class="doc">
@@ -95,7 +101,7 @@
   <section id="architecture"><div class="doc">
     <h2>Architecture</h2>
     <ul>
-      <li><b>One static page</b> renders every drawing in the browser with Canvas 2D. No framework, no build step.</li>
+      <li><b>Static files only:</b> two HTML pages, their CSS and a few plain JS files render every drawing in the browser with Canvas 2D. No framework, no build step.</li>
       <li><b>One small server function</b>, <code>/api/mcr</code>, reads the record from peaq and returns it to the page. It holds no keys, stores no data, and caches each answer for 5 minutes to spare peaq's API.</li>
       <li>If the live record can't be read, the page falls back to the ID alone, and also accepts a pasted API response.</li>
       <li>Hosted on Vercel, with the source on <a href="https://github.com/ArkainStudio/machine-elevations">GitHub</a>.</li>
@@ -120,12 +126,12 @@
       <li><b>Gallery, fleet sheets and a launch kit.</b> A public gallery of the Machine Economy, one sheet per operator fleet, and an embeddable widget that gives <b>new teams a ready visual identity from their first machine</b>.</li>
     </ol>
   </div></section>
+  </div>
 </main>
 
 <footer><div class="wrap">
   <p>Machine Elevations by Amir Keshavarzian (Arkain), <a href="https://www.arkain.studio/">ARKAIN STUDIO</a>. Code under MIT. Robot artwork © ARKAIN STUDIO.</p>
 </div></footer>
-
 
 </body>
 </html>
