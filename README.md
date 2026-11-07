@@ -6,6 +6,10 @@ Machine Elevations draws each machine on [peaq](https://www.peaq.xyz/) as an arc
 
 Live demo: **https://machine-elevations.vercel.app** · Methodology: **https://machine-elevations.vercel.app/methodology**
 
+![Four real machines on peaq drawn by the demo: Woon, Booster K1, a Silencio sensor and The Claw #0981](docs/real-machines.png)
+
+*Four real machines on peaq: Woon and Booster K1 read live from the MCR API, a Silencio sensor and The Claw #0981 drawn from their ID with the body for their machine type.*
+
 ## How data becomes a drawing
 
 | peaqOS data | Drawing |
@@ -22,7 +26,28 @@ Nothing is random at draw time. Rendering uses only the seed and the record.
 
 ## The peaq series
 
-The demo borrows bodies from GRID_ARCHITECT_SERIES. The production version gets its own modular body system, drawn only for peaq in white, indigo and cyan. The first three prototypes, PQ Courier (delivery robot), PQ Operator (humanoid) and PQ Listener (sensor), are shown on the demo page. The Listener is the first body picked by machine type: any machine of type sensor is drawn with it.
+The demo borrows bodies from GRID_ARCHITECT_SERIES. The production version gets its own modular body system, drawn only for peaq in white, indigo and cyan. The first four prototypes, PQ Courier (delivery robot), PQ Operator (humanoid), PQ Listener (sensor) and PQ Arcade (claw machine), are shown on the demo page. Bodies are picked by machine type: sensors are drawn as the Listener, humanoids as the Operator and claw machines as the Arcade.
+
+
+![The four peaq prototype bodies: PQ Courier, PQ Operator, PQ Listener and PQ Arcade](docs/peaq-series.png)
+
+## Project structure
+
+```
+index.html          demo page
+methodology.html    how the data maps to the drawing
+css/                page styles
+js/units.js         GRID_ARCHITECT_SERIES robot sprites (artwork, see Licence)
+js/peaq-units.js    peaq series bodies: Courier, Operator, Listener, Arcade
+js/engine.js        deterministic renderer: DID hash, seed, finishes, Sheet class
+js/app.js           demo page: form, live fetch, sheet index
+js/methodology.js   figures on the methodology page
+api/mcr.js          serverless proxy to the peaq MCR API (5 min cache)
+assets/             favicon and social preview image
+docs/               images for this README
+```
+
+No build step and no dependencies: the site is static files plus one Vercel function.
 
 ## Data source
 
@@ -31,11 +56,11 @@ Records come from the public peaqOS Machine Credit Rating API:
 - `https://mcr.peaq.xyz/mcr/did:peaq:<machine id>` for machines homed on peaq
 - `https://mcr-20.peaq.xyz/mcr/did:peaq:<machine id>` for machines homed on Solana
 
-Activated machines can be browsed at [app.peaq.xyz/machines](https://app.peaq.xyz/machines). If the browser cannot read the API directly, the demo accepts the API's JSON response pasted in.
+Activated machines can be browsed at the [peaq Machine Explorer](https://machines.peaq.xyz/). If the browser cannot read the API directly, the demo accepts the API's JSON response pasted in.
 
 ## Run it
 
-The demo is a single self-contained file. Open `index.html` in a browser, or serve the folder with any static host.
+Serve the folder with any static server, for example `python3 -m http.server` or `npx serve .`, and open it in a browser. The live API proxy in `api/` runs on Vercel, or locally with `vercel dev`.
 
 ## Status
 
@@ -51,10 +76,13 @@ This is the proof of concept for a peaq ecosystem grant proposal. Planned next:
 Designed and built by Amir Keshavarzian ([Arkain](https://x.com/ArkainArt)), [ARKAIN STUDIO](https://www.arkain.studio/).
 
 - Code: MIT licence (see `LICENSE`)
-- Artwork: the robot bodies in this demo come from GRID_ARCHITECT_SERIES by ARKAIN STUDIO and are © ARKAIN STUDIO, used here for the demo only. Artwork made for the peaq version will be released under CC BY 4.0.
+- Artwork: the GRID_ARCHITECT_SERIES bodies (`js/units.js`) are © ARKAIN STUDIO and used here for the demo only. The peaq series bodies (`js/peaq-units.js`) and the artwork made for the peaq version will be released under CC BY 4.0.
 
 ## Changelog
 
+- **v0.5.0 (7 Nov 2026):** the site is split into separate HTML, CSS and JS files; social preview image, favicon and page metadata; LICENSE file; README images and project structure.
+- **v0.4.2 (7 Nov 2026):** new PQ Arcade body for claw machines, with The Claw #0981 by DualMint in the sheet index; claw machine added to the Type field.
+- **v0.4.1 (7 Nov 2026):** the real Booster K1 (a humanoid in the peaq Machine Explorer) is now named and drawn as a PQ Operator; humanoid added to the Type field.
 - **v0.4.0 (6 Nov 2026):** PQ Listener, the first body picked by machine type (any sensor is drawn as a Listener); a Type field in the form; a real Silencio sensor in the sheet index.
 - **v0.3.0 (5 Nov 2026):** robotics interface (plotter reveal, CAD crosshair and coordinates, live API status), animated thumbnails, peaq series prototypes (PQ Courier, PQ Operator), methodology page.
 - **v0.2.0 (4 Nov 2026):** live MCR records through `/api/mcr`, Solana-homed machines, legacy DID handling.
