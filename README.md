@@ -43,6 +43,7 @@ js/engine.js        deterministic renderer: DID hash, seed, finishes, Sheet clas
 js/app.js           demo page: form, live fetch, sheet index
 js/methodology.js   figures on the methodology page
 api/mcr.js          serverless proxy to the peaq MCR API (5 min cache)
+api/did.js          experimental: reads a legacy did:peaq:0x... DID from the peaq chain (read-only)
 assets/             favicon and social preview image
 docs/               images for this README
 ```
@@ -80,6 +81,7 @@ Designed and built by Amir Keshavarzian ([Arkain](https://x.com/ArkainArt)), [AR
 
 ## Changelog
 
+- **v0.5.2 (10 Nov 2026):** experimental `api/did.js`, a read-only reader for legacy `did:peaq:0x...` DIDs: EVM addresses through the DID precompile, 32-byte accounts through the `peaqdid_readAttribute` RPC.
 - **v0.5.1 (7 Nov 2026):** methodology page gets a sticky contents sidebar and a centred reading column; sheet index tiles align and show the selected machine with an ink outline.
 - **v0.5.0 (7 Nov 2026):** the site is split into separate HTML, CSS and JS files; social preview image, favicon and page metadata; LICENSE file; README images and project structure.
 - **v0.4.2 (7 Nov 2026):** new PQ Arcade body for claw machines, with The Claw #0981 by DualMint in the sheet index; claw machine added to the Type field.
