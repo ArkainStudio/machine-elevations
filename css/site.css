@@ -121,6 +121,8 @@ h2{font-stretch:125%;font-weight:750;font-size:clamp(24px,3vw,34px);line-height:
 .tile:hover{border-color:var(--ink)}
 .tile.on{border-color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
 .tile canvas{display:block;width:100%;height:auto}
+.fleetcount{font-weight:500;color:var(--soft);font-stretch:100%;letter-spacing:0;text-transform:none;margin-left:6px}
+.fleetnote{font-size:14px;color:var(--soft);margin:-4px 0 12px;max-width:46em}
 .tile .cap{padding:8px 10px;font-size:13.5px;line-height:1.35}
 .tile .cap b{font-stretch:115%;color:var(--ink)}
 .tag{display:inline-block;font-size:12px;padding:1px 6px;border:1px solid currentColor;margin-left:6px;color:#1d7a5c}

@@ -87,7 +87,7 @@ function buildModel(did, data, source) {
   const finish = FINISH[rating] || 'Drafting Paper';
   const events = Number.isFinite(+data.event_count) ? +data.event_count : 0;
   const act = Math.min(1, Math.log10(1 + events) / 4);
-  const bonded = data.bond_status ? data.bond_status === 'bonded' : source !== 'live';
+  const bonded = data.bond_status ? (data.bond_status === 'bonded' || data.bond_status === 'unknown') : source !== 'live';
   const alive = bonded && data.active !== false;
   const stamps = [];
   if (!rating || rating === 'NR' || rating === 'Provisioned') stamps.push(['PRELIMINARY — NOT RATED', 'ink']);

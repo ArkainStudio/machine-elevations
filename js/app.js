@@ -131,6 +131,32 @@ function tiles(host, models) {
   });
 }
 tiles($('real'), REAL); tiles($('fleet'), SAMPLES);
+// Live fleet sheet: the first sensors of Silencio's operator, read from the MCR API through /api/fleet.
+const SILENCIO_OP = 'did:peaq:0x06EbC22B08229fb796788DB1AAE9675bfC4e22ba';
+(async () => {
+  if (!/^https?:$/.test(location.protocol)) return;
+  try {
+    const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 9000);
+    const r = await fetch(`/api/fleet?operator=${encodeURIComponent(SILENCIO_OP)}&limit=12`, { signal: ctl.signal }); clearTimeout(tm);
+    if (!r.ok) return;
+    const j = await r.json(); const list = ((j && j.machines) || []).slice(0, 12);
+    if (!list.length) return;
+    // Each sensor's own record (bond, events) comes from /api/mcr; the list alone has no bond status.
+    const models = await Promise.all(list.map(async x => {
+      const id = String(x.machine_id || '').slice(-4);
+      const base = { name: `Silencio ${id}`, machine_type: 'sensor', operator: SILENCIO_OP };
+      const rec = await fetchRecord(x.did).catch(() => null);
+      const data = rec && rec.data ? Object.assign({}, rec.data, base)
+        : Object.assign({ mcr: x.mcr, mcr_score: x.mcr_score, negative_flag: x.negative_flag, bond_status: 'unknown' }, base);
+      const m = buildModel(x.did, data, 'live');
+      m.note = (m.events != null ? m.events + (m.events === 1 ? ' event' : ' events') : 'sensor') + ', live fleet'; return m;
+    }));
+    const total = j.pagination && j.pagination.total;
+    if (total) $('fleetCount').textContent = `· ${Number(total).toLocaleString('en-US')} machines`;
+    $('liveFleet').hidden = false;
+    tiles($('fleetLive'), models);
+  } catch (e) {}
+})();
 SERIES.forEach(m => {
   const f = document.createElement('figure'); const cv = document.createElement('canvas'); f.appendChild(cv);
   const cap = document.createElement('figcaption'); cap.innerHTML = m.cap; f.appendChild(cap);

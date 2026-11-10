@@ -96,9 +96,14 @@
   <section>
     <span class="sheetno"><b>Sheet 04</b> · Register</span>
     <h2>Sheet index</h2>
-    <p class="intro">Real machines on peaq, followed by an invented fleet that shows every state a machine can be in.</p>
+    <p class="intro">Real machines on peaq, a live fleet, then an invented fleet that shows every state a machine can be in.</p>
     <div class="subhead">Real machines on peaq</div>
     <div class="index" id="real"></div>
+    <div id="liveFleet" hidden>
+      <div class="subhead">Live fleet: Silencio <span class="fleetcount" id="fleetCount"></span></div>
+      <p class="fleetnote">Read live from the peaq MCR API for Silencio's operator address, one sheet per sensor. Every sensor gets the PQ Listener body; its ID sets the name and rhythm.</p>
+      <div class="index" id="fleetLive"></div>
+    </div>
     <div class="subhead">Sample fleet, one operator</div>
     <div class="index" id="fleet"></div>
   </section>
