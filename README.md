@@ -82,6 +82,7 @@ Designed and built by Amir Keshavarzian ([Arkain](https://x.com/ArkainArt)), [AR
 
 ## Changelog
 
+- **v0.5.4 (13 Nov 2026):** IDs pasted with spaces, line breaks or invisible characters are cleaned before drawing. Machines typed `robot` get the PQ Operator body, and known machines keep their known type even when the record names a broader one.
 - **v0.5.3 (10 Nov 2026):** live fleet sheet: the first 12 sensors of Silencio's operator, read from the MCR API through the new `api/fleet.js`.
 - **v0.5.2 (10 Nov 2026):** experimental `api/did.js`, a read-only reader for legacy `did:peaq:0x...` DIDs: EVM addresses through the DID precompile, 32-byte accounts through the `peaqdid_readAttribute` RPC.
 - **v0.5.1 (7 Nov 2026):** methodology page gets a sticky contents sidebar and a centred reading column; sheet index tiles align and show the selected machine with an ink outline.

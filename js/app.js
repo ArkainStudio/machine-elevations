@@ -211,7 +211,7 @@ $('drawForm').addEventListener('submit', async ev => {
   const rec = await fetchRecord(did);
   if (normDid($('mid').value) !== did) return;
   if (rec && rec.missing) msg('Drawn from the ID only. peaqOS has no credit record for this machine yet, so it stays on drafting paper.');
-  else if (rec) { if (nm) rec.data.name = nm; if ($('mtype').value) rec.data.machine_type = $('mtype').value; else if (!rec.data.machine_type && ty) rec.data.machine_type = ty; show(buildModel(did, rec.data, 'live')); msg('Live record loaded from the peaq MCR API.'); }
+  else if (rec) { if (nm) rec.data.name = nm; if ($('mtype').value) rec.data.machine_type = $('mtype').value; else if (KNOWN_TYPES[did]) rec.data.machine_type = KNOWN_TYPES[did]; else if (!rec.data.machine_type && ty) rec.data.machine_type = ty; show(buildModel(did, rec.data, 'live')); msg('Live record loaded from the peaq MCR API.'); }
   else msg('Drawn from the ID only. The live record could not be read here, so add it under "Add credit data from peaq".');
 });
 $('apply').addEventListener('click', () => {
@@ -223,7 +223,7 @@ $('apply').addEventListener('click', () => {
     if (!did) { msg('The response has no machine ID. Enter the ID above and press Apply again.', true); return; }
     $('mid').value = did; updateHint();
     const nm = $('mname').value.trim() || knownName(did); if (nm) data.name = nm;
-    if ($('mtype').value) data.machine_type = $('mtype').value; else if (!data.machine_type && KNOWN_TYPES[did]) data.machine_type = KNOWN_TYPES[did];
+    if ($('mtype').value) data.machine_type = $('mtype').value; else if (KNOWN_TYPES[did]) data.machine_type = KNOWN_TYPES[did];
     show(buildModel(did, data, 'live')); msg('Credit data applied.');
     big.scrollIntoView({ block: 'nearest' });
   } catch (e) { msg('The pasted text is not valid JSON. Copy the whole response and try again.', true); }

@@ -61,12 +61,13 @@ const SUF = ['umi','ane','os','oud','ith','ovo','irk','ix','ura','eon','orn','ae
 
 // ---------- data → model ----------
 function normDid(input) {
-  const s = String(input || '').trim();
+  // Copying from a PDF or chat can add spaces, line breaks or invisible characters inside the ID.
+  const s = String(input || '').replace(/[\s\u00AD\u200B-\u200D\u2060\uFEFF]+/g, '');
   if (!s) return '';
   return s.startsWith('did:') ? s : 'did:peaq:' + s;
 }
 // Machine types with a dedicated peaq-series body. Others keep the body picked from the ID.
-const TYPE_BODIES = [[/sensor/i, 'PQ-S01'], [/humanoid/i, 'PQ-H01'], [/claw|arcade/i, 'PQ-A01']];
+const TYPE_BODIES = [[/sensor/i, 'PQ-S01'], [/humanoid|robot/i, 'PQ-H01'], [/claw|arcade/i, 'PQ-A01']];
 function typeBody(type) {
   if (!type || typeof PEAQ_UNITS === 'undefined') return null;
   for (const [re, code] of TYPE_BODIES) if (re.test(String(type))) return PEAQ_UNITS.find(u => u.code === code) || null;
