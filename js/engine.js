@@ -67,10 +67,11 @@ function normDid(input) {
   return s.startsWith('did:') ? s : 'did:peaq:' + s;
 }
 // Machine types with a dedicated peaq-series body. Others keep the body picked from the ID.
-const TYPE_BODIES = [[/sensor/i, 'PQ-S01'], [/humanoid|robot/i, 'PQ-H01'], [/claw|arcade/i, 'PQ-A01']];
+const TYPE_BODIES = [[/sensor/i, 'PQ-S01'], [/hexapod|six.?leg|spider|crawler|walking/i, 'GA-084'], [/humanoid|robot/i, 'PQ-H01'], [/claw|arcade/i, 'PQ-A01']];
 function typeBody(type) {
-  if (!type || typeof PEAQ_UNITS === 'undefined') return null;
-  for (const [re, code] of TYPE_BODIES) if (re.test(String(type))) return PEAQ_UNITS.find(u => u.code === code) || null;
+  if (!type) return null;
+  const pool = [].concat(typeof PEAQ_UNITS === 'undefined' ? [] : PEAQ_UNITS, UNITS);
+  for (const [re, code] of TYPE_BODIES) if (re.test(String(type))) return pool.find(u => u.code === code) || null;
   return null;
 }
 function buildModel(did, data, source) {
