@@ -21,6 +21,7 @@ button.ghost{background:transparent;color:var(--ink)}
 button:disabled{opacity:.5;cursor:default}
 #msg{font-size:14px;color:var(--soft);min-height:21px}
 #msg.err{color:var(--redline)}
+#out[hidden]{display:none}
 #out{width:100%;height:auto;display:block;border:1.5px solid var(--ink);background:#fff;margin:6px 0 30px}
 .hint{font-size:13px;color:var(--soft);margin:0 0 40px}
 .hint code{background:var(--sheet);padding:1px 5px;border:1px solid var(--rule)}

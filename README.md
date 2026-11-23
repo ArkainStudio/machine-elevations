@@ -82,6 +82,7 @@ Designed and built by Amir Keshavarzian ([Arkain](https://x.com/ArkainArt)), [AR
 
 ## Changelog
 
+- **v0.5.8 (23 Nov 2026):** The empty sheet frame on /fleet stays hidden until a fleet is drawn.
 - **v0.5.7 (23 Nov 2026):** Fleet sheet is linked from the top menu of every page.
 - **v0.5.6 (23 Nov 2026):** New `/fleet` page: paste an operator wallet and the whole fleet is drawn as one shareable sheet (6 or 12 machines, each from its own live record), with Download PNG and a ready link (`/fleet?op=0x…&name=…&type=…`).
 - **v0.5.5 (18 Nov 2026):** Hexapod and walking machines get a six-legged body (GA-084 Belirk Crawler), with a new Hexapod option in the Type menu. BANDIT and Pincer1 are added to the known machines, with their names and types.
