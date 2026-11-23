@@ -139,3 +139,5 @@ h2{font-stretch:125%;font-weight:750;font-size:clamp(24px,3vw,34px);line-height:
 footer{border-top:1.5px solid var(--ink);padding:22px 0 48px;font-size:14px;color:var(--soft)}
 footer p{max-width:46em;margin:0 0 8px}
 @media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important}}
+
+.nav a{white-space:nowrap}
