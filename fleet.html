@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Draw a whole peaq fleet as one sheet of architectural elevations, from the operator's live MCR records.">
+<meta name="author" content="Amir Keshavarzian (Arkain), ARKAIN STUDIO">
+<title>Fleet sheet — Machine Elevations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/fleet.css">
+<meta name="theme-color" content="#26287C">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://machine-elevations.vercel.app/fleet">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Machine Elevations">
+<meta property="og:title" content="Fleet sheet: Machine Elevations">
+<meta property="og:description" content="Draw a whole peaq fleet as one sheet of architectural elevations, from the operator's live MCR records.">
+<meta property="og:url" content="https://machine-elevations.vercel.app/fleet">
+<meta property="og:image" content="https://machine-elevations.vercel.app/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@ArkainArt">
+<meta name="twitter:title" content="Fleet sheet: Machine Elevations">
+<meta name="twitter:description" content="Draw a whole peaq fleet as one sheet of architectural elevations, from the operator's live MCR records.">
+<meta name="twitter:image" content="https://machine-elevations.vercel.app/assets/og.png">
+<script src="/js/units.js" defer></script>
+<script src="/js/engine.js" defer></script>
+<script src="/js/peaq-units.js" defer></script>
+<script src="/js/fleet.js" defer></script>
+</head>
+<body>
+<header class="mast"><div class="wrap"><a class="brand" href="/">MACHINE ELEVATIONS</a><nav><a href="/">Draw a machine</a><a href="/methodology">Methodology</a></nav></div></header>
+<main class="wrap">
+  <h1>Fleet sheet</h1>
+  <p class="lede">Paste an operator's wallet. The page reads the fleet from the peaq MCR API, draws each machine from its own live record, and lays them out as one sheet you can download and share.</p>
+  <form id="f">
+    <div class="op"><label for="op">Operator wallet</label><input id="op" placeholder="did:peaq:0x… or 0x…" autocomplete="off" spellcheck="false"></div>
+    <div><label for="fname">Fleet name</label><input id="fname" placeholder="e.g. Silencio"></div>
+    <div><label for="ftype">Machine type</label><select id="ftype"><option value="">Auto, from the record</option><option value="sensor">Sensor</option><option value="humanoid">Humanoid</option><option value="claw machine">Claw machine</option><option value="hexapod">Hexapod</option><option value="delivery robot">Delivery robot</option></select></div>
+    <div><label for="count">Machines</label><select id="count"><option>6</option><option selected>12</option></select></div>
+  </form>
+  <div class="btns"><button id="go" type="button">Draw fleet</button><button id="dl" class="ghost" type="button" disabled>Download PNG</button><button id="cp" class="ghost" type="button">Copy link</button></div>
+  <div id="msg" role="status"></div>
+  <canvas id="out" width="1600" height="900" hidden></canvas>
+  <p class="hint">Share a ready link: <code>/fleet?op=0x…&amp;name=Silencio&amp;type=sensor</code>. The sheet is drawn again from live data every time it opens.</p>
+</main>
+</body>
+</html>
