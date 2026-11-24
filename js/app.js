@@ -17,12 +17,14 @@ const VEXUD = 'did:peaq:72070072199752035588865179268289351973289970295321663729
 const CLAW0981 = 'did:peaq:114678985380463396085340569071015783585465315513860965220494351598865276200981';
 const CLAW5132 = 'did:peaq:7880844840680473598647715060196938812942482830060030002578453444793444675132';
 const BANDIT = 'did:peaq:110591867174769515640969131871712719393190994968120611912378001608474481855991';
+const OR2670 = 'did:peaq:92230804329619969908124594562268491009379623306253368777929019613578006602670';
 const PINCER1 = 'did:peaq:96346805206046828902405159296026781799436803010239232876973404642757495253488';
 const SILENCIO = 'did:peaq:0x3307ec84bfcaaeef28f0f0d341ffd293f8412213ea9d1fbb8e08b26feefdddff';
 // Names and types as listed in the peaq Machine Explorer (the MCR API does not return them).
 const KNOWN = { [SILENCIO]: { type: 'sensor' }, [VEXUD]: { name: 'Booster K1', type: 'humanoid' },
   [CLAW0981]: { name: 'The Claw #0981', type: 'claw machine' }, [CLAW5132]: { name: 'The Claw #5132', type: 'claw machine' },
-  [BANDIT]: { name: 'BANDIT', type: 'humanoid' }, [PINCER1]: { name: 'Pincer1 P1-0000', type: 'hexapod' } };
+  [BANDIT]: { name: 'BANDIT', type: 'humanoid' }, [PINCER1]: { name: 'Pincer1 P1-0000', type: 'hexapod' },
+  [OR2670]: { name: 'OpenRoboto #2670', type: 'egocapture' } };
 const KNOWN_TYPES = Object.fromEntries(Object.entries(KNOWN).filter(([, v]) => v.type).map(([k, v]) => [k, v.type]));
 const knownName = did => (KNOWN[did] && KNOWN[did].name) || '';
 const REAL = [

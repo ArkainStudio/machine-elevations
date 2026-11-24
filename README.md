@@ -82,6 +82,7 @@ Designed and built by Amir Keshavarzian ([Arkain](https://x.com/ArkainArt)), [AR
 
 ## Changelog
 
+- **v0.5.9 (24 Nov 2026):** New peaq body PQ-E01 Capturer for EgoCapture and other head-mounted stereo cameras (OpenRoboto), with an EgoCapture option in the Type menus. OpenRoboto #2670 added to the known machines.
 - **v0.5.8 (23 Nov 2026):** The empty sheet frame on /fleet stays hidden until a fleet is drawn.
 - **v0.5.7 (23 Nov 2026):** Fleet sheet is linked from the top menu of every page.
 - **v0.5.6 (23 Nov 2026):** New `/fleet` page: paste an operator wallet and the whole fleet is drawn as one shareable sheet (6 or 12 machines, each from its own live record), with Download PNG and a ready link (`/fleet?op=0x…&name=…&type=…`).

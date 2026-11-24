@@ -67,7 +67,7 @@ function normDid(input) {
   return s.startsWith('did:') ? s : 'did:peaq:' + s;
 }
 // Machine types with a dedicated peaq-series body. Others keep the body picked from the ID.
-const TYPE_BODIES = [[/sensor/i, 'PQ-S01'], [/hexapod|six.?leg|spider|crawler|walking/i, 'GA-084'], [/humanoid|robot/i, 'PQ-H01'], [/claw|arcade/i, 'PQ-A01']];
+const TYPE_BODIES = [[/ego.?capture|stereo|head.?mounted|wearable/i, 'PQ-E01'], [/sensor/i, 'PQ-S01'], [/hexapod|six.?leg|spider|crawler|walking/i, 'GA-084'], [/humanoid|robot/i, 'PQ-H01'], [/claw|arcade/i, 'PQ-A01']];
 function typeBody(type) {
   if (!type) return null;
   const pool = [].concat(typeof PEAQ_UNITS === 'undefined' ? [] : PEAQ_UNITS, UNITS);
