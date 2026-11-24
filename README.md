@@ -82,6 +82,7 @@ Designed and built by Amir Keshavarzian ([Arkain](https://x.com/ArkainArt)), [AR
 
 ## Changelog
 
+- **v0.5.10 (24 Nov 2026):** Fleet sheet now applies the chosen machine type to every machine (EgoCapture, Sensor, Humanoid, Hexapod, Claw), not only Delivery robot.
 - **v0.5.9 (24 Nov 2026):** New peaq body PQ-E01 Capturer for EgoCapture and other head-mounted stereo cameras (OpenRoboto), with an EgoCapture option in the Type menus. OpenRoboto #2670 added to the known machines.
 - **v0.5.8 (23 Nov 2026):** The empty sheet frame on /fleet stays hidden until a fleet is drawn.
 - **v0.5.7 (23 Nov 2026):** Fleet sheet is linked from the top menu of every page.

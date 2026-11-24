@@ -22,7 +22,7 @@ async function record(did) {
 }
 function pickUnit(type) {
   if (CODES[type]) return [].concat(typeof PEAQ_UNITS === 'undefined' ? [] : PEAQ_UNITS, UNITS).find(u => u.code === CODES[type]) || null;
-  return null;
+  return (type && typeof typeBody === 'function') ? typeBody(type) : null;
 }
 async function draw() {
   const op = normOp($('op').value);
